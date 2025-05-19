@@ -1,0 +1,18 @@
+{
+  "name": "pid-platform",
+  "version": "1.0.0",
+  "description": "Plateforme de gestion des PIDs pour PERENCO Cameroun",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
+    "chart.js": "^4.3.0"
+  },
+  "devDependencies": {
+    "vite": "^4.3.9"
+  }
+}
