@@ -1,73 +1,19 @@
-// Fonctions d'authentification pour la plateforme PID PERENCO
+// Ce fichier contient uniquement la logique commune d'authentification
 document.addEventListener("DOMContentLoaded", () => {
-  // Vérifier si nous sommes sur la page de connexion
-  if (document.getElementById("login-form")) {
-    const loginForm = document.getElementById("login-form")
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault()
+  // Vérifier l'état d'authentification
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true"
 
-      // Récupérer les valeurs du formulaire
-      const email = document.getElementById("email").value
-      const password = document.getElementById("password").value
-
-      // Simuler l'authentification (à remplacer par un vrai système d'authentification)
-      if (email && password) {
-        // Stocker les informations de l'utilisateur connecté
-        localStorage.setItem("isAuthenticated", "true")
-        localStorage.setItem("userEmail", email)
-        localStorage.setItem("userName", email.split("@")[0])
-
-        // Redirection vers le tableau de bord
-        window.location.href = "dashboard.html"
-      } else {
-        alert("Veuillez remplir tous les champs")
-      }
-    })
-  }
-
-  // Vérifier si nous sommes sur la page d'inscription
-  if (document.getElementById("register-form")) {
-    const registerForm = document.getElementById("register-form")
-    registerForm.addEventListener("submit", (e) => {
-      e.preventDefault()
-
-      // Récupérer les valeurs du formulaire
-      const firstname = document.getElementById("firstname").value
-      const lastname = document.getElementById("lastname").value
-      const email = document.getElementById("email").value
-      const password = document.getElementById("password").value
-      const confirmPassword = document.getElementById("confirm-password").value
-
-      // Vérifier si les mots de passe correspondent
-      if (password !== confirmPassword) {
-        alert("Les mots de passe ne correspondent pas")
-        return
-      }
-
-      // Simuler l'inscription (à remplacer par un vrai système d'inscription)
-      if (firstname && lastname && email && password) {
-        // Stocker les informations de l'utilisateur
-        localStorage.setItem("isAuthenticated", "true")
-        localStorage.setItem("userEmail", email)
-        localStorage.setItem("userName", `${firstname} ${lastname}`)
-
-        // Redirection vers le tableau de bord
-        window.location.href = "dashboard.html"
-      } else {
-        alert("Veuillez remplir tous les champs")
-      }
-    })
-  }
+  // Mettre à jour l'interface utilisateur
+  updateAuthUI()
 
   // Gérer le menu utilisateur et la déconnexion si l'utilisateur est connecté
-  updateAuthUI()
+  if (isAuthenticated) {
+    createUserMenu()
+  }
 })
 
 // Fonction pour créer le menu utilisateur
 function createUserMenu() {
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true"
-  if (!isAuthenticated) return
-
   const userName = localStorage.getItem("userName") || "Utilisateur"
   const navMenu = document.querySelector(".nav-menu")
 
@@ -83,35 +29,34 @@ function createUserMenu() {
     userMenuItem.className = "nav-item user-menu-container"
 
     const userMenu = `
-            <a href="#" class="nav-link user-menu-toggle">
-                <i class="fas fa-user"></i> ${userName}
-            </a>
-            <div class="user-dropdown">
-                <a href="dashboard.html" class="user-dropdown-item">
-                    <i class="fas fa-tachometer-alt"></i> Tableau de bord
-                </a>
-                <a href="pid-management.html" class="user-dropdown-item">
-                    <i class="fas fa-project-diagram"></i> Gestion des PIDs
-                </a>
-                <a href="import-data.html" class="user-dropdown-item">
-                    <i class="fas fa-file-import"></i> Importer des données
-                </a>
-                <a href="#" class="user-dropdown-item logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-            </div>
-        `
+      <a href="#" class="nav-link user-menu-toggle">
+        <i class="fas fa-user"></i> ${userName}
+      </a>
+      <div class="user-dropdown">
+        <a href="dashboard.html" class="user-dropdown-item">
+          <i class="fas fa-tachometer-alt"></i> Tableau de bord
+        </a>
+        <a href="zones.html" class="user-dropdown-item">
+          <i class="fas fa-layer-group"></i> Zones
+        </a>
+        <a href="import-data.html" class="user-dropdown-item">
+          <i class="fas fa-file-import"></i> Importer des données
+        </a>
+        <a href="#" class="user-dropdown-item logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+      </div>
+    `
 
     userMenuItem.innerHTML = userMenu
     navMenu.appendChild(userMenuItem)
 
-    // Ajouter le gestionnaire d'événement pour la déconnexion
+    // Ajouter les gestionnaires d'événements
     document.querySelector(".logout-btn").addEventListener("click", (e) => {
       e.preventDefault()
       logout()
     })
 
-    // Ajouter le gestionnaire d'événement pour le menu déroulant
     document.querySelector(".user-menu-toggle").addEventListener("click", (e) => {
       e.preventDefault()
       document.querySelector(".user-dropdown").classList.toggle("active")
@@ -119,7 +64,7 @@ function createUserMenu() {
   }
 }
 
-// Fonction pour mettre à jour l'interface utilisateur en fonction de l'état d'authentification
+// Fonction pour mettre à jour l'interface utilisateur
 function updateAuthUI() {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true"
 
@@ -132,15 +77,40 @@ function updateAuthUI() {
     el.style.display = isAuthenticated ? "none" : "block"
   })
 
-  // Mettre à jour le bouton de connexion / menu utilisateur
-  if (isAuthenticated) {
-    createUserMenu()
-  } else {
-    // S'assurer que le bouton de connexion est visible
-    const loginBtn = document.querySelector(".login-btn")
-    if (loginBtn) {
-      loginBtn.parentElement.style.display = "block"
-    }
+  // Mettre à jour la navigation
+  updateNavigation(isAuthenticated)
+}
+
+// Fonction pour mettre à jour la navigation
+function updateNavigation(isAuthenticated) {
+  const navMenu = document.querySelector(".nav-menu")
+  if (!navMenu) return
+
+  // Structure de base de la navigation
+  const baseNavItems = [
+    { href: "index.html", text: "Accueil" },
+    { href: "zones.html", text: "Zones" },
+    { href: "dashboard.html", text: "Tableau de bord" },
+    { href: "about.html", text: "À propos" }
+  ]
+
+  // Vider le menu
+  navMenu.innerHTML = ""
+
+  // Ajouter les éléments de base
+  baseNavItems.forEach(item => {
+    const li = document.createElement("li")
+    li.className = "nav-item"
+    li.innerHTML = `<a href="${item.href}" class="nav-link">${item.text}</a>`
+    navMenu.appendChild(li)
+  })
+
+  // Ajouter le bouton de connexion si non authentifié
+  if (!isAuthenticated) {
+    const loginLi = document.createElement("li")
+    loginLi.className = "nav-item"
+    loginLi.innerHTML = '<a href="login.html" class="nav-link login-btn">Connexion</a>'
+    navMenu.appendChild(loginLi)
   }
 }
 
@@ -149,7 +119,5 @@ function logout() {
   localStorage.removeItem("isAuthenticated")
   localStorage.removeItem("userEmail")
   localStorage.removeItem("userName")
-
-  // Redirection vers la page d'accueil
   window.location.href = "index.html"
 }
