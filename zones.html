@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zones - PERENCO Cameroun</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/zones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="logo">
+                    <a href="index.html">PERENCO Cameroun</a>
+                </div>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Accueil</a></li>
+                    <li class="nav-item"><a href="zones.html" class="nav-link active">Zones</a></li>
+                    <li class="nav-item"><a href="dashboard.html" class="nav-link">Tableau de bord</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">À propos</a></li>
+                    <li class="nav-item"><a href="login.html" class="nav-link login-btn">Connexion</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="page-header-content">
+                <h1>Zones de Production</h1>
+                <p>Découvrez les zones de production et leurs plateformes associées</p>
+            </div>
+        </section>
+
+        <!-- Contenu pour utilisateurs non authentifiés -->
+        <section class="non-auth-content">
+            <div class="container">
+                <div class="auth-required-message">
+                    <div class="message-content">
+                        <i class="fas fa-lock"></i>
+                        <h2>Accès restreint</h2>
+                        <p>Connectez-vous pour accéder aux informations détaillées des zones de production.</p>
+                        <div class="message-buttons">
+                            <a href="login.html" class="btn btn-primary">Se connecter</a>
+                            <a href="register.html" class="btn btn-secondary">Créer un compte</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenu pour utilisateurs authentifiés -->
+        <section class="zones-container auth-required">
+            <div class="container">
+                <div class="search-filter-container">
+                    <div class="search-box">
+                        <input type="text" id="zone-search" placeholder="Rechercher une zone...">
+                        <button id="search-button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="zones-grid">
+                    <!-- Les zones seront générées dynamiquement ici -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <p>PERENCO Cameroun</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="zones.html">Zones</a></li>
+                        <li><a href="dashboard.html">Tableau de bord</a></li>
+                        <li><a href="about.html">À propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Douala, Cameroun</li>
+                        <li><i class="fas fa-phone"></i> +237 233 XX XX XX</li>
+                        <li><i class="fas fa-envelope"></i> contact@perenco-cameroun.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 PERENCO Cameroun. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/zones.js"></script>
+</body>
+</html>
